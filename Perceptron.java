@@ -13,7 +13,7 @@ public class Perceptron {
     double threshold;   //for step function
     double biasWeight = 1;
 
-    public void Train(double[][] inputs, int[] outputs, double threshold, double learningRate, int epoch) {
+    public void Train(double[][] inputs, double[] outputs, double threshold, double learningRate, int epoch) {
         this.threshold = threshold;
         int n = inputs[0].length;
         int p = outputs.length;
@@ -34,8 +34,8 @@ public class Perceptron {
             System.out.println("EPOCH NUMBER: " + (i + 1));
             int totalError = 0;
             for (int j = 0; j < p; j++) {
-                int output = perceptronOutput(inputs[j]);
-                int error = outputs[j] - output;
+                double output = perceptronOutput(inputs[j]);
+                double error = outputs[j] - output;
                 totalError += error;
                 for (int k = 0; k < n; k++) {
                     double delta = learningRate * inputs[j][k] * error;
@@ -57,12 +57,13 @@ public class Perceptron {
         }
     }
 
-    public int perceptronOutput(double[] input) {
+    public double perceptronOutput(double[] input) {
         double net = 0.0;
         for (int i = 0; i < input.length; i++) {
             net += weightVector[i] * input[i];
         }
         net += biasWeight;          //adding inductive bias
+        //return 1/(1+Math.pow(Math.E, -net));    //sigmoid unit
         if (net >= threshold) {     //step function
             //System.out.println("O = 1");
             return 1;
